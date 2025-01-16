@@ -1,0 +1,15 @@
+[
+  {
+    "$group": {
+      "_id": "$ProductName",
+      "Stock": {
+        "$sum": "$Stock"
+      }
+    }
+  },
+  {
+    "$sort": {
+      "Stock": -1
+    }
+  }
+]

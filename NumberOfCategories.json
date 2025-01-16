@@ -1,0 +1,19 @@
+[
+  {
+    "$group": {
+      "_id": null,
+      "Categories": {
+        "$addToSet": "$Category"
+      }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "TotalCategories": {
+        "$size": "$Categories"
+      },
+      "Categories": 1
+    }
+  }
+]

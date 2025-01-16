@@ -1,0 +1,31 @@
+[
+  {
+    "$group": {
+      "_id": "$ProductName",
+      "TotalSold": {
+        "$sum": "$Quantity"
+      },
+      "TotalRevenue": {
+        "$sum": {
+          "$multiply": [ "$Quantity", "$Price" ]
+        }
+      }
+    }
+  },
+  {
+    "$sort": {
+      "TotalSold": -1
+    }
+  },
+  {
+    "$limit": 5
+  },
+  {
+    "$project": {
+      "ProductName": "$_id",
+      "TotalSold": "$TotalSold",
+      "TotalRevenue": "$TotalRevenue",
+      "_id": 0
+    }
+  }
+]

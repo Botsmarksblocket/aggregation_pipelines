@@ -1,0 +1,61 @@
+[
+  {
+    "$lookup": {
+      "from": "product",
+      "localField": "ProductName",
+      "foreignField": "ProductName",
+      "as": "Supplier"
+    }
+  },
+  {
+    "$unwind": "$Supplier"
+  },
+  {
+    "$group": {
+      "_id": {
+        "Product": "$ProductName",
+        "Month": {
+          "$month": "$SaleTimestamp"
+        },
+        "Supplier": "$Supplier.Supplier"
+      },
+      "TotalQuantity": {
+        "$sum": "$Quantity"
+      }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "Product": "$_id.Product",
+      "Month": {
+        "$arrayElemAt": [
+          [
+            "",
+            "Januari",
+            "Februari",
+            "Mars",
+            "April",
+            "Maj",
+            "Juni",
+            "Juli",
+            "Augusti",
+            "September",
+            "Oktober",
+            "November",
+            "December"
+          ],
+          "$_id.Month"
+        ]
+      },
+      "Supplier": "$_id.Supplier",
+      "TotalQuantity": 1
+    }
+  },
+  {
+    "$sort": {
+      "SaleMonth": 1,
+      "TotalQuantity": -1
+    }
+  }
+]
